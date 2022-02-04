@@ -1,7 +1,7 @@
 const express = require("express");
-const reviews = express.Router();
+const reviews = express.Router({ mergeParams: true });
 const {
-  getAllReviews,
+  getAnimeReviews,
   getReview,
   newReview,
   updateReview,
@@ -9,13 +9,8 @@ const {
 } = require("../queries/reviews");
 
 reviews.get("/", async (req, res) => {
-  console.log("GET to /reviews");
-  const reviews = await getAllReviews();
-  if (reviews.length) {
-    res.status(200).json(reviews);
-  } else {
-    res.status(404).json({ error: "reviews could not be found" });
-  }
+  const reviews = await getAnimeReviews(req.params.id);
+  res.status(200).json(reviews);
 });
 
 reviews.get("/:id", async (req, res) => {
